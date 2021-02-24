@@ -24,5 +24,8 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="View")
+	float Reach = 100.f;
+
 		
 };
