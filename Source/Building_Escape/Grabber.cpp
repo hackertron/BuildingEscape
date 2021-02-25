@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Grabber.h"
 #include "GameFramework/PlayerController.h"
 #include "Engine/World.h"
-#include "Grabber.h"
-
 #include "DrawDebugHelpers.h"
+#include "GameFramework/DefaultPawn.h"
 
 #define  OUT
 
@@ -60,7 +60,22 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	
 
 	// Ray-cast out to a certain distance (Reach)
-
+	FHitResult Hit;
+	FCollisionQueryParams TraceParams(FName(TEXT("")), false, GetOwner());
+	bool HitResult = GetWorld()->LineTraceSingleByObjectType(
+		OUT Hit,
+		PlayerViewPointLocation,
+		LineTraceEnd,
+		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
+		TraceParams
+	);
 	// See what it hits
+	AActor* ActorHit = Hit.GetActor();
+	if(HitResult)
+	{
+		UE_LOG(LogTemp, Error, TEXT("got hit %s"), *ActorHit->GetName());
+	}
+
+	
 }
 
