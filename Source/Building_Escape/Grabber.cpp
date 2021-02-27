@@ -57,10 +57,12 @@ void UGrabber::Grab()
 	// try and reach any actors with physics body collision channel set.
 	const FHitResult HitResult = GetFirstPhysicsBodyInReach();
 	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();
+	AActor* ActorHit = HitResult.GetActor();
 
 	// if we hit something then attach physics handle
-	if (HitResult.GetActor())
+	if (ActorHit)
 	{
+		if(!PhysicsHandle) {return;}
 		// attach physics handle
 		PhysicsHandle->GrabComponentAtLocation(ComponentToGrab, NAME_None, GetLineTraceEnd());		
 	}
@@ -69,7 +71,7 @@ void UGrabber::Grab()
 void UGrabber::GrabRelease()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Grabber released"));
-	// todo remove physics handle
+	if(!PhysicsHandle) {return;}
 	PhysicsHandle->ReleaseComponent();
 }
 
@@ -80,6 +82,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	// if the physics handle is attached
+	if(!PhysicsHandle) {return;}
 	if (PhysicsHandle->GrabbedComponent)
 	{
 		// move the object we are holding
